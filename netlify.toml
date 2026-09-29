@@ -1,18 +1,16 @@
 [build]
-  command = "cd frontend && npm install --include=dev && npm run build"
-  publish = "frontend/dist"
+  base = "frontend"
+  command = "npm install --include=dev && npm run build"
+  publish = "dist"
 
 [build.environment]
   NODE_VERSION = "22"
-  SECRETS_SCAN_OMIT_KEYS = "NODE_ENV"
-  SECRETS_SCAN_OMIT_PATHS = ".gitignore,README.md"
 
 [[redirects]]
   from = "/api/*"
   to = "https://dhruva-backend-ow7p.onrender.com/api/:splat"
   status = 200
   force = true
-  headers = {X-Forwarded-Host = ":host", Authorization = ":auth"}
 
 [[redirects]]
   from = "/*"
