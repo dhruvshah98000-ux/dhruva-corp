@@ -1,18 +1,13 @@
 [build]
-  command = "cd frontend && npm install --include=dev && npm run build && cd ../server && npm install --include=dev"
+  command = "cd frontend && npm install --include=dev && npm run build"
   publish = "frontend/dist"
-  functions = "netlify/functions"
 
 [build.environment]
   NODE_VERSION = "22"
 
-[functions]
-  node_bundler = "esbuild"
-  external_node_modules = ["razorpay"]
-
 [[redirects]]
   from = "/api/*"
-  to = "/.netlify/functions/api/api/:splat"
+  to = "https://dhruva-backend-ow7p.onrender.com/api/:splat"
   status = 200
   force = true
 
