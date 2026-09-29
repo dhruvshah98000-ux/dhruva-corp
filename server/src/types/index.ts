@@ -1,3 +1,5 @@
+import { Request } from 'express'
+
 export type OrderStatus = 'pending' | 'paid' | 'failed' | 'cancelled' | 'refunded'
 export type PurchaseStatus = 'active' | 'expired' | 'permanent' | 'cancelled' | 'refunded'
 
@@ -69,7 +71,7 @@ export interface Purchase {
   status: PurchaseStatus
 }
 
-export interface AuthenticatedRequest extends Express.Request {
+export interface AuthenticatedRequest extends Request {
   userId?: string
   userEmail?: string
 }
