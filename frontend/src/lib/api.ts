@@ -1,8 +1,13 @@
 import axios from 'axios'
 import { supabase } from './supabase'
 
+// Use Render backend URL directly — avoids Netlify redirect stripping Authorization header
+const baseURL = import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL}/api`
+  : '/api'
+
 const api = axios.create({
-  baseURL: '/api',
+  baseURL,
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',

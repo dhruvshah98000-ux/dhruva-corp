@@ -18,8 +18,11 @@ const sizes = {
 
 export const Modal: React.FC<ModalProps> = ({ open, onClose, title, children, size = 'md' }) => {
   useEffect(() => {
-    if (open) document.body.style.overflow = 'hidden'
-    else document.body.style.overflow = ''
+    if (open) {
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.body.style.overflow = ''
+    }
     return () => { document.body.style.overflow = '' }
   }, [open])
 
@@ -27,18 +30,38 @@ export const Modal: React.FC<ModalProps> = ({ open, onClose, title, children, si
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={onClose} />
-      <div className={`relative w-full ${sizes[size]} bg-dark-800 border border-dark-700/50 rounded-xl shadow-2xl animate-slide-up`}>
+      {/* Dim & Blur Backdrop */}
+      <div
+        className="absolute inset-0 bg-dark-950/80 backdrop-blur-md transition-opacity animate-fade-in"
+        onClick={onClose}
+      />
+
+      {/* Modal Dialog */}
+      <div
+        className={`
+          relative w-full ${sizes[size]} bg-dark-900/95 border border-white/[0.12]
+          rounded-2xl shadow-glass shadow-2xl backdrop-blur-2xl animate-slide-up overflow-hidden
+        `}
+      >
+        {/* Top ambient highlight */}
+        <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-brand-400/80 to-transparent" />
+
         {title && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-dark-700/50">
-            <h3 className="text-lg font-semibold text-white">{title}</h3>
-            <button onClick={onClose} className="text-dark-400 hover:text-white transition-colors">
+          <div className="flex items-center justify-between px-6 py-4.5 border-b border-white/[0.08] bg-white/[0.02]">
+            <h3 className="text-lg font-bold text-white tracking-tight">{title}</h3>
+            <button
+              onClick={onClose}
+              className="p-1 rounded-lg text-dark-400 hover:text-white hover:bg-dark-800 transition-colors"
+            >
               <X className="h-5 w-5" />
             </button>
           </div>
         )}
         {!title && (
-          <button onClick={onClose} className="absolute top-4 right-4 text-dark-400 hover:text-white transition-colors z-10">
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 p-1 rounded-lg text-dark-400 hover:text-white hover:bg-dark-800 transition-colors z-10"
+          >
             <X className="h-5 w-5" />
           </button>
         )}
@@ -47,3 +70,4 @@ export const Modal: React.FC<ModalProps> = ({ open, onClose, title, children, si
     </div>
   )
 }
+

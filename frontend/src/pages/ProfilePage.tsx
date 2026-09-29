@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { User, Mail, Save, Lock } from 'lucide-react'
+import { User, Mail, Save, Lock, ShieldCheck } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { DashboardLayout } from '../components/layout/DashboardLayout'
 import { Card, CardHeader, CardBody } from '../components/ui/Card'
@@ -16,8 +16,6 @@ export const ProfilePage: React.FC = () => {
   const [discord, setDiscord] = useState('')
   const [saving, setSaving] = useState(false)
   const [errors, setErrors] = useState<Record<string, string>>({})
-
-  // Password reset
   const [sendingReset, setSendingReset] = useState(false)
 
   useEffect(() => {
@@ -48,7 +46,7 @@ export const ProfilePage: React.FC = () => {
         discord_username: discord.trim() || null,
       })
       await refreshProfile()
-      toast.success('Profile updated!')
+      toast.success('Profile updated successfully!')
     } catch {
       toast.error('Failed to update profile')
     } finally {
@@ -64,7 +62,7 @@ export const ProfilePage: React.FC = () => {
         redirectTo: `${window.location.origin}/reset-password`,
       })
       if (error) throw error
-      toast.success('Password reset email sent. Check your inbox.')
+      toast.success('Password reset email sent! Check your inbox.')
     } catch {
       toast.error('Failed to send reset email')
     } finally {
@@ -74,38 +72,48 @@ export const ProfilePage: React.FC = () => {
 
   return (
     <DashboardLayout>
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold text-white">Profile</h1>
-        <p className="text-dark-400 text-sm mt-1">Manage your account details</p>
+      <div className="mb-8">
+        <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight flex items-center gap-2">
+          <User className="h-6 w-6 text-brand-400" /> Account & Security
+        </h1>
+        <p className="text-dark-400 text-xs sm:text-sm mt-1">
+          Manage your personal details, phone number for WhatsApp receipts, and Discord link.
+        </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Avatar card */}
-        <div>
-          <Card>
-            <CardBody className="text-center py-8">
-              <div className="w-20 h-20 bg-brand-600 rounded-full flex items-center justify-center mx-auto mb-4">
-                <User className="h-10 w-10 text-white" />
+        {/* User Card */}
+        <div className="space-y-6">
+          <Card glow className="text-center p-6">
+            <CardBody className="py-4 space-y-4">
+              <div className="relative w-24 h-24 mx-auto">
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-brand-600 to-cyber-cyan blur-md opacity-70 animate-pulse-slow" />
+                <div className="relative w-full h-full rounded-3xl bg-dark-900 border-2 border-brand-400/50 flex items-center justify-center text-white shadow-glow">
+                  <User className="h-10 w-10 text-cyber-cyan" />
+                </div>
               </div>
-              <p className="text-white font-semibold text-lg">{profile?.full_name || 'User'}</p>
-              <p className="text-dark-400 text-sm mt-1">{user?.email}</p>
-              <div className="mt-4 text-xs text-dark-500">
-                Member since {profile?.created_at ? new Date(profile.created_at).getFullYear() : '—'}
+
+              <div>
+                <h3 className="text-lg font-bold text-white">{profile?.full_name || 'VIP Client'}</h3>
+                <p className="text-dark-400 font-mono text-xs mt-0.5">{user?.email}</p>
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/15 border border-emerald-500/30 text-emerald-400 text-[11px] font-mono font-semibold mt-3">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" /> Verified Customer
+                </div>
               </div>
             </CardBody>
           </Card>
 
-          {/* Security */}
-          <Card className="mt-4">
-            <CardHeader>
+          {/* Security Card */}
+          <Card className="p-6">
+            <CardHeader className="px-0 pt-0 pb-4">
               <div className="flex items-center gap-2">
                 <Lock className="h-4 w-4 text-brand-400" />
-                <span className="font-semibold text-white text-sm">Security</span>
+                <span className="font-bold text-white text-xs uppercase tracking-wider font-mono">Password Security</span>
               </div>
             </CardHeader>
-            <CardBody>
-              <p className="text-dark-400 text-sm mb-4">
-                Send a password reset link to your email.
+            <CardBody className="px-0 py-2 space-y-3">
+              <p className="text-dark-400 text-xs leading-relaxed">
+                Need to change your password? We will send an encrypted reset link to your registered email address.
               </p>
               <Button
                 variant="secondary"
@@ -114,53 +122,55 @@ export const ProfilePage: React.FC = () => {
                 loading={sendingReset}
                 size="sm"
               >
-                Send Reset Email
+                Send Reset Link
               </Button>
             </CardBody>
           </Card>
         </div>
 
-        {/* Edit form */}
-        <div className="lg:col-span-2">
+        {/* Edit Form */}
+        <div className="lg:col-span-2 space-y-6">
           <Card>
             <CardHeader>
               <div className="flex items-center gap-2">
-                <User className="h-4 w-4 text-brand-400" />
-                <span className="font-semibold text-white text-sm">Personal Information</span>
+                <ShieldCheck className="h-4 w-4 text-brand-400" />
+                <span className="font-bold text-white text-xs uppercase tracking-wider font-mono">Client Credentials</span>
               </div>
             </CardHeader>
-            <CardBody>
-              <form onSubmit={handleSave} className="space-y-5">
+            <CardBody className="p-6">
+              <form onSubmit={handleSave} className="space-y-4">
                 <Input
                   label="Full Name"
-                  placeholder="John Doe"
+                  placeholder="Aman Sharma"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   error={errors.fullName}
                 />
 
-                <div>
-                  <label className="block text-sm font-medium text-dark-200 mb-1.5">Email Address</label>
+                <div className="space-y-1.5">
+                  <label className="block text-xs font-semibold uppercase tracking-wider text-dark-300">
+                    Email Address
+                  </label>
                   <div className="relative">
-                    <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-dark-500" />
+                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-dark-500" />
                     <input
                       type="email"
                       value={user?.email || ''}
                       disabled
-                      className="w-full pl-9 pr-4 py-2.5 rounded-lg text-sm bg-dark-800/40 border border-dark-700 text-dark-400 cursor-not-allowed"
+                      className="w-full pl-10 pr-4 py-2.5 rounded-xl text-sm font-medium bg-dark-950/70 border border-white/[0.06] text-dark-400 cursor-not-allowed font-mono"
                     />
                   </div>
-                  <p className="text-xs text-dark-500 mt-1">Email cannot be changed here</p>
+                  <p className="text-[11px] text-dark-500">Email is permanently bound to your license profile</p>
                 </div>
 
                 <Input
-                  label="Phone Number"
+                  label="Mobile Number (WhatsApp)"
                   type="tel"
                   placeholder="9876543210"
                   value={phone}
                   onChange={(e) => setPhone(e.target.value)}
                   error={errors.phone}
-                  hint="10-digit Indian mobile number"
+                  hint="Used for key recovery and direct support"
                 />
 
                 <Input
@@ -168,36 +178,15 @@ export const ProfilePage: React.FC = () => {
                   placeholder="username#1234 or @username"
                   value={discord}
                   onChange={(e) => setDiscord(e.target.value)}
+                  hint="Used to grant VIP customer role on our Discord server"
                 />
 
                 <div className="pt-2">
-                  <Button type="submit" loading={saving} size="md">
-                    <Save className="h-4 w-4" />
-                    Save Changes
+                  <Button type="submit" loading={saving} variant="cyber" size="md" className="font-bold shadow-glow-cyan gap-2">
+                    <Save className="h-4 w-4" /> Save Profile Changes
                   </Button>
                 </div>
               </form>
-            </CardBody>
-          </Card>
-
-          {/* Account info (read only) */}
-          <Card className="mt-4">
-            <CardHeader>
-              <span className="font-semibold text-white text-sm">Account Information</span>
-            </CardHeader>
-            <CardBody>
-              <div className="space-y-3">
-                {[
-                  { label: 'User ID', value: user?.id ? `${user.id.slice(0, 8)}...` : '—' },
-                  { label: 'Email Verified', value: user?.email_confirmed_at ? '✓ Verified' : '✗ Not verified' },
-                  { label: 'Account Created', value: profile?.created_at ? new Date(profile.created_at).toLocaleDateString() : '—' },
-                ].map(({ label, value }) => (
-                  <div key={label} className="flex justify-between text-sm">
-                    <span className="text-dark-400">{label}</span>
-                    <span className="text-white font-medium">{value}</span>
-                  </div>
-                ))}
-              </div>
             </CardBody>
           </Card>
         </div>

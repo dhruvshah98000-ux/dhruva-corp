@@ -4,6 +4,7 @@ import { supabaseAdmin } from '../lib/supabase'
 import { razorpay, verifyPaymentSignature } from '../lib/razorpay'
 import { CreateOrderInput, VerifyPaymentInput, CustomerInfoInput } from '../validators/payment'
 import { addDays } from '../utils/date'
+import { sendPurchaseNotification } from '../services/emailService'
 
 // POST /api/payment/create-order
 export async function createOrder(req: AuthRequest, res: Response): Promise<void> {
@@ -256,6 +257,34 @@ export async function saveCustomerInfo(req: AuthRequest, res: Response): Promise
         discord_username: discordUsername || null,
       })
       .eq('auth_user_id', userId)
+
+    // Send email notification to admin
+    try {
+      const { data: fullOrder } = await supabaseAdmin
+        .from('orders')
+        .select('*, product:products(name), plan:product_plans(name), purchase:purchases(*)')
+        .eq('id', orderId)
+        .single()
+
+      if (fullOrder) {
+        await sendPurchaseNotification({
+          customerName: fullName,
+          customerEmail: fullOrder.customer_email || '',
+          customerPhone: phone,
+          customerDiscord: discordUsername || '',
+          productName: fullOrder.product?.name || '',
+          planName: fullOrder.plan?.name || '',
+          amount: fullOrder.amount,
+          orderId: fullOrder.razorpay_order_id,
+          paymentId: fullOrder.razorpay_payment_id || '',
+          purchasedAt: fullOrder.paid_at || new Date().toISOString(),
+          expiresAt: fullOrder.purchase?.[0]?.expires_at || null,
+        })
+      }
+    } catch (emailErr) {
+      console.error('[saveCustomerInfo] Email notification failed:', emailErr)
+      // Don't fail the request if email fails
+    }
 
     res.json({ success: true, data: { message: 'Customer information saved' } })
   } catch (err) {

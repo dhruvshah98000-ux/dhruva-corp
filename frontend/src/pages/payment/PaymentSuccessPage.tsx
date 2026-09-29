@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate, Link } from 'react-router-dom'
-import { CheckCircle2, ExternalLink } from 'lucide-react'
+import { CheckCircle2, Key, ShieldCheck, ArrowRight, Sparkles } from 'lucide-react'
 import { MainLayout } from '../../components/layout/MainLayout'
 import { Card, CardBody } from '../../components/ui/Card'
 import { Button } from '../../components/ui/Button'
@@ -33,76 +33,79 @@ export const PaymentSuccessPage: React.FC = () => {
 
   return (
     <MainLayout>
-      <div className="page-container max-w-lg mx-auto">
-        {/* Success banner */}
-        <div className="text-center mb-8">
-          <div className="w-20 h-20 bg-green-500/10 border-2 border-green-500/30 rounded-full flex items-center justify-center mx-auto mb-4 animate-pulse-glow">
-            <CheckCircle2 className="h-10 w-10 text-green-400" />
+      <div className="page-container max-w-lg mx-auto py-12">
+        {/* Celebration Banner */}
+        <div className="text-center mb-8 space-y-3">
+          <div className="w-20 h-20 bg-emerald-500/15 border-2 border-emerald-500/40 rounded-3xl flex items-center justify-center mx-auto text-emerald-400 shadow-glow-green animate-bounce">
+            <CheckCircle2 className="h-10 w-10" />
           </div>
-          <h1 className="text-3xl font-bold text-white mb-2">Payment Successful ✓</h1>
-          <p className="text-dark-400">Your order has been successfully processed.</p>
+          <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-300 text-xs font-mono">
+            <Sparkles className="h-3.5 w-3.5" /> TRANSACTION CONFIRMED
+          </div>
+          <h1 className="text-3xl font-black text-white">Payment Successful!</h1>
+          <p className="text-dark-300 text-sm">Your panel access has been automatically provisioned.</p>
         </div>
 
-        <Card>
-          <CardBody className="space-y-5">
+        <Card glow className="overflow-hidden border-emerald-500/30">
+          <CardBody className="p-6 sm:p-8 space-y-6">
             {loading ? (
               <div className="space-y-3">
-                {[1, 2, 3, 4].map((i) => <Skeleton key={i} className="h-5 w-full" />)}
+                {[1, 2, 3, 4].map((i) => <Skeleton key={i} className="h-6 w-full rounded-xl" />)}
               </div>
             ) : purchase ? (
-              <>
-                <div className="space-y-3">
+              <div className="space-y-4">
+                <div className="space-y-3 bg-dark-950/80 rounded-2xl p-4 border border-white/[0.06] font-mono text-xs">
                   {[
-                    { label: 'Product', value: purchase.product_name_snapshot },
-                    { label: 'Plan', value: purchase.plan_name_snapshot },
-                    { label: 'Amount Paid', value: formatCurrencyRaw(purchase.amount_paid) },
-                    { label: 'Purchase Date', value: formatDate(purchase.purchased_at) },
+                    { label: 'Panel Build', value: purchase.product_name_snapshot },
+                    { label: 'Subscription Plan', value: purchase.plan_name_snapshot },
+                    { label: 'Total Paid', value: formatCurrencyRaw(purchase.amount_paid) },
+                    { label: 'Date', value: formatDate(purchase.purchased_at) },
                     {
-                      label: 'Expiry',
-                      value: purchase.expires_at
-                        ? formatDate(purchase.expires_at)
-                        : 'Permanent / Lifetime',
+                      label: 'Validity',
+                      value: purchase.expires_at ? formatDate(purchase.expires_at) : 'Permanent / Lifetime',
                     },
-                    { label: 'Order ID', value: purchase.order?.razorpay_order_id || state.orderId },
-                    { label: 'Payment ID', value: purchase.order?.razorpay_payment_id || '—' },
+                    { label: 'Razorpay Ref', value: purchase.order?.razorpay_order_id || state.orderId },
                   ].map(({ label, value }) => (
                     <div key={label} className="flex justify-between items-start gap-4">
-                      <span className="text-dark-400 text-sm shrink-0">{label}</span>
-                      <span className="text-white text-sm font-medium text-right break-all">{value}</span>
+                      <span className="text-dark-400 font-sans">{label}</span>
+                      <span className="text-white font-bold text-right break-all">{value}</span>
                     </div>
                   ))}
-                  <div className="flex justify-between items-center">
-                    <span className="text-dark-400 text-sm">Status</span>
+                  <div className="flex justify-between items-center pt-2 border-t border-white/[0.08]">
+                    <span className="text-dark-400 font-sans">Status</span>
                     <StatusBadge status={purchase.status} />
                   </div>
                 </div>
 
-                <div className="border-t border-dark-700 pt-4 bg-dark-900/40 rounded-xl p-4">
-                  <div className="text-xs text-dark-400 mb-2 font-medium uppercase tracking-wider">Support</div>
-                  <p className="text-sm text-dark-300">
-                    Need help? Contact us at{' '}
-                    <span className="text-brand-400">support@dhruva.corp</span>
+                <div className="p-4 rounded-2xl bg-brand-500/10 border border-brand-500/20 space-y-2">
+                  <div className="flex items-center gap-2 text-brand-300 font-bold text-xs">
+                    <ShieldCheck className="h-4 w-4 text-emerald-400" />
+                    <span>Next Steps for Activation</span>
+                  </div>
+                  <p className="text-dark-300 text-xs leading-relaxed">
+                    View your purchase details to copy your unique activation key and download the loader application.
                   </p>
                 </div>
-              </>
+              </div>
             ) : (
-              <div className="text-center text-dark-400 py-4">
-                Order ID: <span className="font-mono text-white text-sm">{state.orderId}</span>
-                <br /><span className="text-xs mt-1 block">Your purchase is being processed.</span>
+              <div className="text-center text-dark-400 py-6 font-mono text-xs">
+                Order ID: <span className="text-white font-bold">{state.orderId}</span>
+                <p className="mt-2 text-dark-300">Your order is ready in your dashboard.</p>
               </div>
             )}
 
-            <div className="flex gap-3 pt-2">
+            <div className="flex flex-col sm:flex-row gap-3 pt-2">
               {purchase && (
                 <Link to={`/dashboard/purchases/${purchase.id}`} className="flex-1">
-                  <Button variant="outline" fullWidth>
-                    <ExternalLink className="h-4 w-4" />
-                    View Purchase
+                  <Button variant="cyber" size="md" fullWidth className="font-bold shadow-glow-cyan gap-1.5">
+                    <Key className="h-4 w-4" /> Get License Key
                   </Button>
                 </Link>
               )}
               <Link to="/dashboard" className="flex-1">
-                <Button fullWidth>Go to Dashboard</Button>
+                <Button variant="secondary" size="md" fullWidth>
+                  Go to Dashboard <ArrowRight className="h-4 w-4" />
+                </Button>
               </Link>
             </div>
           </CardBody>

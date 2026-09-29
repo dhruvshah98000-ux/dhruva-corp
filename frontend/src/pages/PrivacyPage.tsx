@@ -1,57 +1,50 @@
 import React from 'react'
 import { MainLayout } from '../components/layout/MainLayout'
+import { Card } from '../components/ui/Card'
+import { ShieldCheck } from 'lucide-react'
 
 export const PrivacyPage: React.FC = () => (
   <MainLayout>
-    <div className="page-container max-w-3xl mx-auto">
-      <h1 className="text-3xl font-bold text-white mb-2">Privacy Policy</h1>
-      <p className="text-dark-500 text-sm mb-8">Last updated: September 2026</p>
-
-      <div className="space-y-6 text-dark-300 text-sm leading-relaxed">
-        {[
-          {
-            title: '1. Information We Collect',
-            body: 'We collect information you provide directly: name, email address, phone number, and Discord username. We also collect transaction data such as order IDs and payment references (no card details are stored by us).',
-          },
-          {
-            title: '2. How We Use Your Information',
-            body: 'We use your information to: process orders and payments, provide customer support, send order confirmations and updates, improve our products and services, and comply with legal obligations.',
-          },
-          {
-            title: '3. Payment Information',
-            body: 'All payment processing is handled by Razorpay. We do not store credit card numbers or banking information. Only Razorpay Order IDs and Payment IDs are stored for reconciliation purposes.',
-          },
-          {
-            title: '4. Data Sharing',
-            body: 'We do not sell, trade, or rent your personal information to third parties. We may share data with trusted service providers (Supabase, Razorpay) solely to operate our platform.',
-          },
-          {
-            title: '5. Data Security',
-            body: 'We implement industry-standard security measures including encrypted connections (HTTPS), Row Level Security on our database, and server-side authentication for all sensitive operations.',
-          },
-          {
-            title: '6. Cookies',
-            body: 'We use session cookies to maintain your authenticated state. We do not use tracking or advertising cookies.',
-          },
-          {
-            title: '7. Data Retention',
-            body: 'We retain your account data as long as your account is active. Order and purchase records are retained for 7 years as required by financial regulations.',
-          },
-          {
-            title: '8. Your Rights',
-            body: 'You have the right to access, correct, or request deletion of your personal data. Contact us at privacy@dhruva.corp to exercise these rights.',
-          },
-          {
-            title: '9. Contact',
-            body: 'For privacy-related questions, email us at privacy@dhruva.corp.',
-          },
-        ].map(({ title, body }) => (
-          <div key={title}>
-            <h2 className="text-white font-semibold text-base mb-2">{title}</h2>
-            <p>{body}</p>
-          </div>
-        ))}
+    <div className="page-container max-w-4xl mx-auto py-12">
+      <div className="text-center mb-10 space-y-2">
+        <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-emerald-500/15 text-emerald-300 text-xs font-mono">
+          <ShieldCheck className="h-3.5 w-3.5" /> PRIVACY & DATA ENCRYPTION
+        </div>
+        <h1 className="text-3xl sm:text-4xl font-black text-white">Privacy Policy</h1>
+        <p className="text-dark-400 text-xs sm:text-sm font-mono">Last revised: September 2026</p>
       </div>
+
+      <Card glow className="p-6 sm:p-10 border-white/[0.08]">
+        <div className="space-y-8 text-dark-300 text-sm leading-relaxed">
+          {[
+            {
+              title: '1. Information We Collect',
+              body: 'We collect minimal user information necessary to provide and manage digital licenses: account email, full name, phone number (for WhatsApp receipts), and optional Discord handles for VIP ticket routing.',
+            },
+            {
+              title: '2. Payment Security',
+              body: 'All financial transactions are conducted directly through Razorpay with 256-bit SSL encryption. We never see, store, or process credit card numbers or banking secrets.',
+            },
+            {
+              title: '3. Zero Data Sale Policy',
+              body: 'We never sell, rent, or trade customer information to advertisers or marketing networks. All stored records are protected using Postgres Row Level Security (RLS) policies.',
+            },
+            {
+              title: '4. Session & Cookies',
+              body: 'We use necessary cryptographic session tokens solely to maintain authenticated user login states on our dashboard. No tracking or advertising cookies are utilized.',
+            },
+            {
+              title: '5. Contact and Data Purging',
+              body: 'You retain the right to request deletion of your client profile at any time by contacting privacy@dhruva.corp or creating a ticket on Discord.',
+            },
+          ].map(({ title, body }) => (
+            <div key={title} className="border-b border-white/[0.06] pb-6 last:border-0 last:pb-0">
+              <h2 className="text-white font-bold text-base mb-2">{title}</h2>
+              <p className="text-dark-400 leading-relaxed text-xs sm:text-sm">{body}</p>
+            </div>
+          ))}
+        </div>
+      </Card>
     </div>
   </MainLayout>
 )

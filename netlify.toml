@@ -10,6 +10,7 @@
   to = "https://dhruva-backend-ow7p.onrender.com/api/:splat"
   status = 200
   force = true
+  headers = {X-Forwarded-Host = ":host", Authorization = ":auth"}
 
 [[redirects]]
   from = "/*"
