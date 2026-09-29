@@ -1,0 +1,32 @@
+# Environment files — KABHI COMMIT MAT KARO
+.env
+.env.local
+.env.production
+frontend/.env
+frontend/.env.local
+server/.env
+server/.env.local
+
+# Node modules
+node_modules/
+frontend/node_modules/
+server/node_modules/
+netlify/functions/node_modules/
+
+# Build outputs
+frontend/dist/
+server/dist/
+netlify/functions/dist/
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/settings.json
+.idea/
+*.swp
