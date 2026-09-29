@@ -1,11 +1,7 @@
 # Environment files — KABHI COMMIT MAT KARO
-.env
-.env.local
-.env.production
-frontend/.env
-frontend/.env.local
-server/.env
-server/.env.local
+.env*
+frontend/.env*
+server/.env*
 
 # Node modules
 node_modules/

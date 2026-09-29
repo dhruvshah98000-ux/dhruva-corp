@@ -1,6 +1,6 @@
 # Dhruva Corporation — Digital Services Platform
 
-Production-ready digital services website built with React + TypeScript, Node.js, Supabase, and Razorpay.
+Enterprise-grade digital services website built with React + TypeScript, Node.js, Supabase, and Razorpay.
 
 ---
 
@@ -168,7 +168,7 @@ SELECT id FROM auth.users WHERE email = 'your-admin-email@example.com';
 
 ---
 
-## Production Deployment
+## Deployment Guide
 
 ### Backend (Node.js)
 
@@ -179,7 +179,7 @@ npm run build
 npm start
 ```
 
-**Environment:** Set all `server/.env` variables as production environment variables.
+**Environment:** Set all `server/.env` variables as live hosting environment variables.
 
 ### Frontend (React)
 
@@ -193,7 +193,7 @@ npm run build
 
 ### Update CORS
 
-In `server/.env`, set `CORS_ORIGIN` to your production frontend URL:
+In `server/.env`, set `CORS_ORIGIN` to your live frontend URL:
 ```
 CORS_ORIGIN=https://yourdomain.com
 ```

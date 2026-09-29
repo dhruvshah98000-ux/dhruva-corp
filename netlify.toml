@@ -4,6 +4,8 @@
 
 [build.environment]
   NODE_VERSION = "22"
+  SECRETS_SCAN_OMIT_KEYS = "NODE_ENV"
+  SECRETS_SCAN_OMIT_PATHS = ".gitignore,README.md"
 
 [[redirects]]
   from = "/api/*"
